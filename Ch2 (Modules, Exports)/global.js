@@ -1,0 +1,1 @@
+global.appName = 'My Node App'

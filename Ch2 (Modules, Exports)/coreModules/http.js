@@ -17,28 +17,25 @@ server.on('request', (req, res) => {
 
 
     switch (req.url) {
-        case '/': {
+        case '/':
             res.write('Hello from Root page')
             res.end()
-        }
             break
 
-        case '/abc': {
+        case '/abc':
             res.write('<h1>Hello from ABC page</h1>')
             res.end()
-        }
             break
 
-        case '/home': {
+        case '/home':
             fs.readFile('../public/home.html', (err, data) => {
                 if (err) return console.log(err)
 
                 res.write(data)
                 res.end()
             })
-        }
             break
-        case '/main.css': {
+        case '/main.css':
             fs.readFile('../public/main.css', (err, data) => {
                 if (err) return console.log(err)
 
@@ -46,17 +43,15 @@ server.on('request', (req, res) => {
                 res.write(data.toString())
                 res.end()
             })
-        }
             break
 
-        case '/api/students': {
+        case '/api/students':
             res.writeHead(200, {'Content-Type': 'application/json'})
             res.write(JSON.stringify(students))
             res.end()
-        }
             break
 
-        default: {
+        default:
             res.statusCode = 404
             /**
              * setHeader => set one Key-Value pair only
@@ -65,7 +60,6 @@ server.on('request', (req, res) => {
             // res.setHeader('Content-Type', 'text/html')
             // res.writeHead(404, {'Content-Type': 'text/html'})
             res.end()
-        }
     }
 })
 

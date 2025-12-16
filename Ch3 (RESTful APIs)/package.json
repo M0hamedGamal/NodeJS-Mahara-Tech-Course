@@ -1,0 +1,25 @@
+{
+  "name": "nodejs-mahara-tech-course",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/M0hamedGamal/NodeJS-Mahara-Tech-Course.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/M0hamedGamal/NodeJS-Mahara-Tech-Course/issues"
+  },
+  "homepage": "https://github.com/M0hamedGamal/NodeJS-Mahara-Tech-Course#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

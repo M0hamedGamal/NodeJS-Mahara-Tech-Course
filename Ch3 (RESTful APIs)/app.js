@@ -33,6 +33,7 @@ const schema = {
 const ajv = new Ajv()
 const validate = ajv.compile(schema)
 
+// Middlewares
 app.use(express.json()) // for JSON bodies
 app.use(express.urlencoded({extended: true})) // for Form data
 
@@ -127,7 +128,7 @@ app.put('/students/:id', (req, res) => {
         return
     }
 
-    for (i in req.body) {
+    for (let i in req.body) {
         students[idx][i] = req.body[i]
     }
 

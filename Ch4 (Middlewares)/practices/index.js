@@ -1,6 +1,8 @@
 // Practice Rooms
 const express = require('express')
 const Ajv = require('ajv')
+const cookieParser = require('cookie-parser')
+const helmet = require('helmet')
 const app = express()
 const port = process.env.PORT || 7000
 
@@ -29,15 +31,43 @@ const validate = ajv.compile(roomSchema)
 
 // Middlewares
 app.use(express.json())
+app.use(express.static('public'))
+app.use(cookieParser())
+app.use(helmet())
 
-app.get('/rooms', (req, res) => {
+app.use((req, res, next) => {
+    console.log('This middleware fires for all requests')
+    next()
+})
+
+app.use('/rooms', (req, res, next) => {
+    if (req.method === 'GET') {
+        console.log('This is a get request that the end point has /rooms')
+    }
+    next()
+})
+
+app.param('id', (req, res, next, value) => {
+    console.log(`This middleware fires for any request has id as a param. The id is: ${value}`)
+    req.id = value
+    next()
+})
+
+
+app.get('/rooms', (req, res, next) => {
+    console.log('This is an inline Middleware')
+    res.cookie('stdName', Buffer.from('Gamal').toString("base64"), {httpOnly: true})
+    next()
+}, (req, res) => {
     res.json(rooms)
 })
 
 app.get('/rooms/:id', (req, res) => {
-    const id = Number(req.params.id)
+    const id = Number(req.id)
 
     const idx = rooms.findIndex(room => room.id === id)
+
+    console.log(Buffer.from(req.cookies.stdName, "base64").toString())
 
     if (idx === -1) {
         res.status(404).send(`Room with id ${id} not found`)
@@ -74,7 +104,7 @@ app.put('/rooms/:id', (req, res) => {
         return
     }
 
-    const id = Number(req.params.id)
+    const id = Number(req.id)
 
     const idx = rooms.findIndex(room => room.id === id)
 
@@ -91,7 +121,7 @@ app.put('/rooms/:id', (req, res) => {
 })
 
 app.delete('/rooms/:id', (req, res) => {
-    const id = Number(req.params.id)
+    const id = Number(req.id)
 
     const idx = rooms.findIndex(room => room.id === id)
 

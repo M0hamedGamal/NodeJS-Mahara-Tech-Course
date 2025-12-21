@@ -14,7 +14,7 @@ console.log('Sub 4 and 2 is: ', subFn(4, 2))
 console.log('Multi 3 and 7 is: ', multiFn(3, 7))
 console.log('Divide 100 and 5 is: ', divideFn(100, 5))
 
-// node ./app.js Gamal
+// node ./index.js Gamal
 // Gamal
 const name = process.argv[2]
 

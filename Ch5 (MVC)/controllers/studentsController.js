@@ -12,15 +12,12 @@ const getAllStds = (req, res) => {
 }
 
 const getStdById = (req, res) => {
-    // Now the req has an id. Thnx for param middleware
-    const id = req.id
-    // const id = req.params.id
-    const student = students.find(std => std.id === id)
+    Student.fetchStudent(req.id, (student) => {
+        if (!student)
+            res.status(404).send('Not Found')
 
-    if (!student)
-        res.send('Not Found')
-
-    res.json(student)
+        res.json(student)
+    })
 }
 
 const newStd = (req, res) => {
@@ -46,40 +43,32 @@ const updateStd = (req, res) => {
         return
     }
 
-    // Now the req has an id. Thnx for param middleware
     const id = req.id
-    // const id = req.params.id
-    const idx = students.findIndex(std => std.id === id)
 
-    if (idx === -1) {
-        res.status(404).send(`This index ${id} is not found`)
-        return
-    }
+    Student.updateStudent(id, req.body, (updatedStd) => {
+        if (!updatedStd) {
+            res.status(404).send(`This index ${id} is not found`)
+            return
+        }
 
-    for (let i in req.body) {
-        students[idx][i] = req.body[i]
-    }
-
-    const student = students[idx]
-
-    res.json(student)
+        res.json(updatedStd)
+    })
 }
 
 const deleteStd = (req, res) => {
     // Now the req has an id. Thnx for param middleware
     const id = req.id
-    // const id = req.params.id
-    const idx = students.findIndex(std => std.id === id)
 
-    if (idx === -1) {
-        res.status(404)
-        res.send(`This index ${id} is not found`)
+    Student.deleteStudent(id, (deletedStd) => {
+    if (!deletedStd) {
+        res.status(404).send(`This index ${id} is not found`)
         return
     }
 
-    const deletedStd = students.splice(idx, 1)[0]
-
     res.json(deletedStd)
+    })
+
+
 }
 
 module.exports = {

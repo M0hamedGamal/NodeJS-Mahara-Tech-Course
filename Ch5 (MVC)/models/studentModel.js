@@ -17,6 +17,18 @@ module.exports = class Student {
         })
     }
 
+    static fetchStudent(id, callback) {
+        fs.readFile(studentsPath, 'utf8', (err, data) => {
+            if (err) return console.error(err)
+
+            const students = JSON.parse(data)
+
+            const student = students.find(std => std.id === id)
+
+            callback(student)
+        })
+    }
+
     saveStudent() {
         fs.readFile(studentsPath, 'utf8', (err, data) => {
             if (err) return console.log(err)
@@ -31,4 +43,54 @@ module.exports = class Student {
             })
         })
     }
+
+    static updateStudent(id, updatedStudent, callback) {
+        fs.readFile(studentsPath, 'utf8', (err, data) => {
+            if (err) return console.log(err)
+
+            const students = JSON.parse(data)
+
+            const idx = students.findIndex(std => std.id === id)
+
+            if (idx === -1) {
+                callback(undefined)
+                return
+            }
+
+            for(let i in updatedStudent) {
+                students[idx][i] = updatedStudent[i]
+            }
+
+            fs.writeFile(studentsPath, JSON.stringify(students), (err) => {
+                if (err) return console.log(err)
+
+                callback(students[idx])
+            })
+        })
+    }
+
+    static deleteStudent(id, callback) {
+        fs.readFile(studentsPath, 'utf8', (err, data) => {
+            if (err) return console.log(err)
+
+            const students = JSON.parse(data)
+
+            const idx = students.findIndex(std => std.id === id)
+
+            if (idx === -1) {
+                callback(undefined)
+                return
+            }
+
+            const deletedStd = students.splice(idx, 1)[0]
+
+            fs.writeFile(studentsPath, JSON.stringify(students), (err) => {
+                if (err) return console.log(err)
+
+                callback(deletedStd)
+            })
+
+        })
+    }
+
 }

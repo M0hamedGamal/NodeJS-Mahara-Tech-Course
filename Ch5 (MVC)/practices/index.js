@@ -2,7 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const cookieParser = require('cookie-parser')
 const app = express()
-const carRoutes = require('./routes/cars.route')
+const carRoutes = require('./routes/car.route')
 
 // Middlewares
 app.use(helmet())

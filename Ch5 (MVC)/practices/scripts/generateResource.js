@@ -12,7 +12,7 @@ const generatedCRUDFile = async (resource, baseURL) => {
         const resourceCRUDCode = crudTemplate(resource, baseURL);
 
         const routesDir = path.join(__dirname, "../routes");
-        const routePath = path.join(routesDir, `${resource.toLowerCase()}s.route.js`);
+        const routePath = path.join(routesDir, `${resource.toLowerCase()}.route.js`);
 
         // Ensure routes directory exists
         await fs.mkdir(routesDir, { recursive: true });

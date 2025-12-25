@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "type": "Sedan",
+    "class": "A"
+  },
+  {
+    "id": 2,
+    "type": "Hatchback",
+    "class": "A"
+  },
+  {
+    "id": 3,
+    "type": "SUV",
+    "class": "C"
+  },
+  {
+    "id": 4,
+    "type": "Van",
+    "class": "B"
+  }
+]

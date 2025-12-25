@@ -1,7 +1,4 @@
-const express = require('express')
-const Ajv = require('ajv')
-
-const router = express.Router()
+const validate = require('../utils/car.validation')
 
 const data = [
     {id: 1, type: 'Sedan', class: 'A'},
@@ -10,36 +7,12 @@ const data = [
     {id: 4, type: 'Van', class: 'B'},
 ]
 
-
-const schema = {
-    // type: 'object',
-    // minProperties: 2,
-    // maxProperties: 2,
-    // required: ['type', 'class'],
-    // properties: {
-    //     type: {
-    //         type: 'string',
-    //         pattern: '^[A-Za-z0-9]+( [A-Za-z0-9]+)*$',
-    //         enum: ['Sedan', 'Hatchback', 'SUV', 'Van'],
-    //     },
-    //     class: {
-    //         type: 'string',
-    //         enum: ['A', 'B', 'C'],
-    //         minLength: 1,
-    //         maxLength: 1,
-    //     }
-    // }
-}
-
-const ajv = new Ajv()
-const validate = ajv.compile(schema)
-
-router.get('/cars', (req, res) => {
+const fetchAllCars = (req, res) => {
     res.json(data)
     console.log('Cars are fetched successfully')
-})
+}
 
-router.get('/cars/:id', (req, res) => {
+const fetchCar = (req, res) => {
     const id = Number(req.params.id)
 
     const idx = data.findIndex(car => car.id === id)
@@ -51,9 +24,9 @@ router.get('/cars/:id', (req, res) => {
 
     res.json(data[idx])
     console.log('A Car is fetched successfully')
-})
+}
 
-router.post('/cars', (req, res) => {
+const createCar = (req, res) => {
     const isValid = validate(req.body)
 
     if (!isValid) {
@@ -69,9 +42,9 @@ router.post('/cars', (req, res) => {
 
     res.json(newItem)
     console.log('A new Car is created successfully')
-})
+}
 
-router.put('/cars/:id', (req, res) => {
+const updateCar = (req, res) => {
     const id = Number(req.params.id)
 
     const idx = data.findIndex(car => car.id === id)
@@ -94,9 +67,9 @@ router.put('/cars/:id', (req, res) => {
 
     res.json(data[idx])
     console.log('A Car is updated successfully')
-})
+}
 
-router.delete('/cars/:id', (req, res) => {
+const deleteCar = (req, res) => {
     const id = Number(req.params.id)
 
     const idx = data.findIndex(car => car.id === id)
@@ -110,6 +83,12 @@ router.delete('/cars/:id', (req, res) => {
 
     res.json(deletedItem)
     console.log('A Car is deleted successfully')
-})
+}
 
-module.exports = router
+module.exports = {
+    fetchAllCars,
+    fetchCar,
+    createCar,
+    updateCar,
+    deleteCar
+}

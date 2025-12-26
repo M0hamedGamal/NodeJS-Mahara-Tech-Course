@@ -1,7 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const carControllers = require('../controllers/car.controller')
+const carMiddleware = require("../middlewares/car.middleware");
 
+// Middleware
+router.param('id', carMiddleware.carIdMiddleware)
+
+// Routes
 router.get('/cars', carControllers.fetchAllCars)
 
 router.get('/cars/:id', carControllers.fetchCar)

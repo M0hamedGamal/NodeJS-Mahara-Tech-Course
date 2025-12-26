@@ -1,4 +1,5 @@
 const validate = require('../utils/car.validation')
+const Car = require('../models/car.model')
 
 const data = [
     {id: 1, type: 'Sedan', class: 'A'},
@@ -8,22 +9,25 @@ const data = [
 ]
 
 const fetchAllCars = (req, res) => {
-    res.json(data)
-    console.log('Cars are fetched successfully')
+    Car.fetchAllCars((cars) => {
+        res.json(cars)
+        console.log('Cars are fetched successfully')
+    })
 }
 
 const fetchCar = (req, res) => {
     const id = Number(req.params.id)
 
-    const idx = data.findIndex(car => car.id === id)
+    Car.fetchCar(id, (car) => {
 
-    if (idx === -1) {
-        res.status(404).send('No Cars')
-        return
-    }
+        if (!car) {
+            res.status(404).send('No Cars')
+            return
+        }
 
-    res.json(data[idx])
-    console.log('A Car is fetched successfully')
+        res.json(car)
+        console.log('A Car is fetched successfully')
+    })
 }
 
 const createCar = (req, res) => {
@@ -34,26 +38,15 @@ const createCar = (req, res) => {
         return
     }
 
-    const newItem = req.body
+    const car = new Car(req.body)
 
-    newItem.id = data.length + 1
-
-    data.push(newItem)
-
-    res.json(newItem)
-    console.log('A new Car is created successfully')
+    car.createCar((newItem) => {
+        res.json(newItem)
+        console.log('A new Car is created successfully')
+    })
 }
 
 const updateCar = (req, res) => {
-    const id = Number(req.params.id)
-
-    const idx = data.findIndex(car => car.id === id)
-
-    if (idx === -1) {
-        res.status(404).send('No Cars')
-        return
-    }
-
     const isValid = validate(req.body)
 
     if (!isValid) {
@@ -61,28 +54,31 @@ const updateCar = (req, res) => {
         return;
     }
 
-    for (let i in req.body) {
-        data[idx][i] = req.body[i]
+    const id = Number(req.params.id)
+
+    Car.updateCar(id, req.body, (updatedCar) => {
+    if (!updatedCar) {
+        res.status(404).send('No Cars')
+        return
     }
 
-    res.json(data[idx])
+    res.json(updatedCar)
     console.log('A Car is updated successfully')
+    })
 }
 
 const deleteCar = (req, res) => {
     const id = Number(req.params.id)
 
-    const idx = data.findIndex(car => car.id === id)
-
-    if (idx === -1) {
+    Car.deleteCar(id, (deletedCar) => {
+    if (!deletedCar) {
         res.status(404).send('No Cars')
         return
     }
 
-    const deletedItem = data.splice(idx, 1)[0]
-
-    res.json(deletedItem)
+    res.json(deletedCar)
     console.log('A Car is deleted successfully')
+    })
 }
 
 module.exports = {

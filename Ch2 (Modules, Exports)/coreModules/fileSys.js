@@ -59,6 +59,15 @@ fs.writeFile('./texts/secretFile.txt' ,'Shhh, this is a secret', 'utf8',(err) =>
 })
 /////////////////////////////////////////////
 /**
+ * Copy File
+ * Using Async Way
+ * Error if file doesn't exist
+ ***/
+fs.copyFile('./texts/secretFile.txt', `./texts/copySecretFile.txt`, (err) => {
+    if (err) return console.log(err)
+})
+/////////////////////////////////////////////
+/**
  * Delete File
  * Using Async Way
  * Error if file doesn't exist

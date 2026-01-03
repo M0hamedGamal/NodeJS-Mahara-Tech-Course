@@ -15,7 +15,14 @@ const addStudent = async (req, res) => {
         await std.save()
         res.status(200).json(std)
     } catch (error) {
-        console.log(error)
+        console.log(error.errorResponse.code)
+        if (error?.errorResponse?.code === 11000) {
+            const errMsg = error?.errorResponse?.errmsg
+
+            res.status(400).send(errMsg)
+            return
+        }
+
         res.status(400).send('Bad Request')
     }
 }
@@ -34,18 +41,18 @@ const getStudent = async (req, res) => {
 
 // Get All Students
 const getStudents = async (req, res) => {
-    const stds = await Student.find().select({id:1, fn: 1, ln: 1}).sort({id: -1})
-
+    const stds = await Student.find().select({id: 1, fn: 1, ln: 1}).sort({id: -1})
+console.log(stds)
     res.json(stds)
 }
 
 // Update Student
 const updateStudent = async (req, res) => {
     const id = req.params.id
-
     const updatedStd = await Student.findByIdAndUpdate(id, req.body, {
-        new: true
+        new: true // Retrieve the new object instead the original one.
     })
+console.log(req.body)
 
     if (!updatedStd)
         return res.status(404).send('Student not found')
@@ -56,7 +63,8 @@ const updateStudent = async (req, res) => {
 // Delete Student
 const deleteStudent = async (req, res) => {
     const id = req.params.id
-    const deletedStd = Student.findByIdAndDelete(id)
+
+    const deletedStd = await Student.findByIdAndDelete(id)
 
     if (!deletedStd)
         return res.status(404).send('Student not found')

@@ -26,6 +26,9 @@ const studentSchema = new Schema({
         type: String,
         required: true,
         default: 'SD'
+    },
+    class: {
+        type: String,
     }
 })
 

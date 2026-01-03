@@ -13,12 +13,11 @@ router.use('/', studentsMiddlewares.studentsMiddleware)
 
 router.get('/', studentsController.getStudents)
 
-
 router.get('/:id', studentsController.getStudent)
 
-router.post('/', studentsController.addStudent)
+router.post('/', studentsMiddlewares.stdDataValidatorMiddleware, studentsController.addStudent)
 
-router.put('/:id', studentsController.updateStudent)
+router.put('/:id', studentsMiddlewares.stdDataValidatorMiddleware, studentsController.updateStudent)
 
 router.delete('/:id', studentsController.deleteStudent)
 

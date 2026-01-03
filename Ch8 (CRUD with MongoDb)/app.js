@@ -2,6 +2,7 @@ const express = require('express')
 const path = require("path");
 const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
+const cors = require("cors");
 const studentsRouter = require('./routes/students')
 const generalMiddleware = require('./middlewares/general')
 const mongoose = require('mongoose')
@@ -14,6 +15,7 @@ app.use(express.json()) // for JSON bodies
 app.use(express.urlencoded({extended: true})) // for Form data
 app.use(cookieParser()) // Allow to access cookies in all requests
 app.use(helmet()) // Add more HTTP heders to secure the app
+app.use(cors()); // Fix a CORS error.
 
 app.use(generalMiddleware)
 

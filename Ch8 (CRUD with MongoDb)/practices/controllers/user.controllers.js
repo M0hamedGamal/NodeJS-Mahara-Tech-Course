@@ -1,31 +1,5 @@
-const Ajv = require('ajv');
 const User = require('../models/user.models');
-
-const userSchema = {
-    type: 'object',
-    required: ['name', 'age'],
-    minProperties: 2,
-    maxProperties: 2,
-    properties: {
-        name: {
-            type: 'string',
-        },
-        age: {
-            type: 'number',
-            minimum: 9,
-            maximum: 100,
-        }
-    }
-}
-
-const ajv = new Ajv()
-const validator = ajv.compile(userSchema)
-
-const users = [
-    {id: 1, name: 'Mohamed', age: 15},
-    {id: 2, name: 'Ahmed', age: 25},
-    {id: 3, name: 'Ali', age: 35},
-]
+const validator = require('../util/user.validations');
 
 // 1- Get Users
 const getUsersController = (req, res) => {

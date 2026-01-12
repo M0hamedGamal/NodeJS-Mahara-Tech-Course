@@ -1,21 +1,22 @@
 const express = require('express')
 const router = express.Router()
-const usersController = require('../controllers/user.controllers.db')
-const userMiddleware = require('../middlewares/general.middlewares')
+const {getUsersController,  getUserController, createUserController, updateUserController, deleteUserController} = require('../controllers/user.controllers.db')
+const {userIdMiddleware, userValidatorMiddleware} = require('../middlewares/general.middlewares')
+const {hasAdminRoleMiddleware} = require('../middlewares/admin.middlewares.db')
 
 // Middlewares
-router.param('id', userMiddleware.userIdMiddleware)
+router.param('id', userIdMiddleware)
 
 // 2- Create Routers
-router.get('/', usersController.getUsersController)
+router.get('/', getUsersController)
 
-router.get('/:id', usersController.getUserController)
+router.get('/:id', getUserController)
 
-router.post('/', userMiddleware.userValidatorMiddleware, usersController.createUserController)
+router.post('/', userValidatorMiddleware, hasAdminRoleMiddleware, createUserController)
 
-router.put('/:id', userMiddleware.userValidatorMiddleware, usersController.updateUserController)
+router.put('/:id', userValidatorMiddleware, hasAdminRoleMiddleware, updateUserController)
 
-router.delete('/:id', usersController.deleteUserController)
+router.delete('/:id', deleteUserController)
 
 // 3- Exports Router
 module.exports = router

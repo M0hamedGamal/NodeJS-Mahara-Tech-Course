@@ -14,14 +14,16 @@ const authSchema = new Schema({
             message: '{VALUE} is an invalid email address',
         }
     },
+    admin: {type: Boolean, default: false},
 })
 
 
 authSchema.methods.generateAuthToken = function () {
     return jwt.sign({
             userId: this._id,
+            isAdmin: this.admin
         },
-        process.env.SECRET,
+        process.env.JWT_SECRET,
         {
             expiresIn: '7d'
         })

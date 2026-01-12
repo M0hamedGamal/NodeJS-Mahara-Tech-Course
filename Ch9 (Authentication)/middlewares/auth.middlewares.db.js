@@ -19,7 +19,6 @@ const loginValidatorMiddleware = (req, res, next) => {
     next()
 }
 
-
 module.exports = {
     registerValidatorMiddleware,
     loginValidatorMiddleware

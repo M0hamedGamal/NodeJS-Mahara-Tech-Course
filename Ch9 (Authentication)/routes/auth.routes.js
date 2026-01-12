@@ -7,10 +7,4 @@ router.post('/register', registerValidatorMiddleware, registerController)
 
 router.post('/login', loginValidatorMiddleware, loginController)
 
-
-
-
-
-
-
 module.exports = router

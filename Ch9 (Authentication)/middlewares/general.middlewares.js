@@ -17,6 +17,8 @@ const userValidatorMiddleware = (req, res, next) => {
 
     if (!isValid)
         return res.status(403).send('Forbidden')
+
+    next()
 }
 
 module.exports = {

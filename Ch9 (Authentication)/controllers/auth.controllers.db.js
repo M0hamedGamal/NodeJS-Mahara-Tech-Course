@@ -1,8 +1,8 @@
 const Auth = require('../models/auth.models.db')
 const bcrypt = require('bcrypt')
+const asyncFunction = require('../util/asyncFunction');
 
-const registerController = async (req, res) => {
-    try {
+const registerController = asyncFunction(async (req, res, next) => {
         let authUser = await Auth.findOne({email: req.body.email})
         if (authUser) {
             return res.status(400).send('Email already exists')
@@ -27,12 +27,9 @@ const registerController = async (req, res) => {
             data: authUser,
             message: 'Successfully registered'
         })
-    } catch (e) {
-        res.status(400).send(e)
-    }
-}
+})
 
-const loginController = async (req, res) => {
+const loginController = asyncFunction(async (req, res, next) => {
     try {
         const authUser = await Auth.findOne({email: req.body.email})
         if (!authUser) {
@@ -51,9 +48,9 @@ const loginController = async (req, res) => {
 
         res.status(200).send('Successfully logged in')
     } catch (e) {
-        res.status(400).send(e)
+        next(e)
     }
-}
+})
 
 module.exports = {
     registerController,

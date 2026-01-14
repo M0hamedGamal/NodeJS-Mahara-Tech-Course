@@ -1,6 +1,6 @@
 const Auth = require('../models/auth.models.db')
 
-const updateAdminRoleController = async (req, res) => {
+const updateAdminRoleController = async (req, res, next) => {
     try {
         const id = req.params.id
 
@@ -11,7 +11,7 @@ const updateAdminRoleController = async (req, res) => {
 
         res.json(authUser)
     } catch (e) {
-        res.status(400).send(e)
+        next(e)
     }
 }
 
